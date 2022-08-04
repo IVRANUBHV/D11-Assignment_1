@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id = "container">
+      <div id = "headingContainer">
+        <h1>TODO Manager</h1>
+      </div>
+    <div id = "formContainer">
+      <form id = "inputForm">
+          <label for="taskName">Task Details</label>
+          <input class="in" type="text" id="taskName" name="taskName" required />
+          <br>
+          <label for="assigneeName">Assignee name</label>
+          <input class="in" type="text" id="assigneeName" name="assigneeName" required />
+          <br>
+          <label for="dueDate">Due Date</label>
+          <input class="in" type="date" id="dueDate" name="dueDate" required />
+          <br>
+          <input type="submit" value="Submit" id = "submitButton" />
+      </form>
+    </div>
+    <div id = "table1Container">
+        <h2>In Progress</h2>
+        <table id = "progressTable">
+             <tr>
+              <th>Task Details</th>
+              <th>Assignee</th>
+              <th>Due Date</th>
+              <th>Action</th>
+            </tr> 
+          </table>
+    </div>
+    <div id = "table2Container">
+        <h2>Completed</h2>
+        <table id = "completedTable">
+            <tr>
+              <th>Task Details</th>
+              <th>Assignee</th>
+              <th>Due Date</th>
+            </tr>
+            <tr>
+              <td>Task 1</td>
+              <td>Mr Doe</td>
+              <td>12-06-2022</td>
+            </tr>
+            <tr>
+                <td>Task 2</td>
+                <td>Mr Doe</td>
+                <td>08-07-2022</td>
+              </tr>
+          </table>
+    </div>
+
+    </div>
+    <script src="script.js" defer></script>
+</body>
+</html>
