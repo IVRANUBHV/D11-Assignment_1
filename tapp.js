@@ -3,6 +3,9 @@ var inputForm = document.querySelector("#inputForm");
 var progressTable = document.querySelector("#progressTable");
 var completedTable = document.querySelector("#completedTable");
 var selectAssignee = document.querySelector("#selectAssignee");
+var temp1 = document.querySelector("#staskName");
+var temp2 = document.querySelector("#sassigneeName");
+var temp3 = document.querySelector("#sdueDate");
 var taskName;
 var dateAdded;
 var assignee;
@@ -32,6 +35,18 @@ var taskStatus;
 var tasksArray = [];
 // --------- Calling the Fn to create the DROP DOWN --------- 
 createAssignees();
+// --------- Creating Task Objects to be Stored ---------
+var createTaskObj = function (taskName, assignee, data3) {
+    var newTask = {
+        taskDetails: taskName,
+        aName: assignee.toString(),
+        dueDate: data3,
+        id: hash - 1,
+        taskStatus: taskStatus.IN_PROGRESS
+    };
+    tasksArray.push(newTask);
+    console.log(tasksArray[hash - 1]);
+};
 // --------- Creating a new Table Row --------- 
 var createNewTask = function () {
     var newRow = document.createElement("tr");
@@ -53,15 +68,7 @@ var createNewTask = function () {
     newRow.appendChild(data3);
     newRow.appendChild(data4);
     progressTable.appendChild(newRow);
-    var newTask = {
-        taskDetails: taskName.toString(),
-        aName: assignee.toString(),
-        dueDate: data3.innerText,
-        id: hash - 1,
-        taskStatus: taskStatus.IN_PROGRESS
-    };
-    tasksArray.push(newTask);
-    console.log(tasksArray[hash - 1]);
+    createTaskObj(taskName.toString(), assignee.toString(), data3.innerHTML);
 };
 // --------- On Completion --------- 
 var taskCompleted = function (event) {
@@ -74,15 +81,42 @@ var taskCompleted = function (event) {
     tasksArray[parseInt(taskid)].taskStatus = taskStatus.COMPLETED;
     console.log(tasksArray[parseInt(taskid)]);
 };
+// --------- Clearing Spans ---------
+var clearErrors = function () {
+    temp1.innerHTML = "";
+    temp2.innerHTML = "";
+    temp3.innerHTML = "";
+};
+// --------- Clearing INPUTS ---------
+var clearInputs = function () {
+    var temp = inputForm;
+    temp.reset();
+};
 // --------- Validating Data --------- 
 var validateData = function (task, assignee, date) {
-    if (task == "" || assignee == "" || date == "") {
-        return false;
+    // alert(assignee);
+    var ok = true;
+    if (task == "") {
+        temp1.innerHTML = "! PLEASE ENTER A VALID TASK NAME !";
+        ok = false;
     }
-    return true;
+    if (assignee == "default") {
+        temp2.innerHTML = "! PLEASE SELECT A VALID  NAME !";
+        ok = false;
+    }
+    if (date == "") {
+        temp3.innerHTML = "! PLEASE ENTER A VALID DATE !";
+        ok = false;
+    }
+    if (ok) {
+        clearInputs();
+        clearErrors();
+        createNewTask();
+    }
 };
 // --------- Getting the user input values --------- 
 var getFormValues = function (event) {
+    clearErrors();
     event.preventDefault();
     var data = new FormData(inputForm);
     taskName = data.get("taskName");
@@ -91,12 +125,7 @@ var getFormValues = function (event) {
     assignee = data.get("assigneeName");
     dateAdded = data.get("dueDate");
     // VALIDATE DATA
-    var isDataCorrect = validateData(taskName.toString(), assignee.toString(), dateAdded.toString());
-    if (isDataCorrect)
-        createNewTask();
-    else {
-        alert("PLEASE ENTER TASK DETAILS CORRECTLY");
-    }
+    validateData(taskName.toString(), assignee.toString(), dateAdded.toString());
 };
 // --------- Event Listener for Submit Button --------- 
 submitButton.addEventListener("click", getFormValues);

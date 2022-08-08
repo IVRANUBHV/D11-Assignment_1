@@ -17,13 +17,22 @@
           <label for="taskName">Task Details</label>
           <input class="in" type="text" id="taskName" name="taskName" required />
           <br>
+          <span id = "staskName"></span>
+          <br>
+          <br>
           <label>Select Assignee</label>
           <select class="in" id = "selectAssignee" name="assigneeName">
-              <option>Choose a Name</option>
+              <option value="default">Choose a Name</option>
           </select>
           <br>
-          <label for="dueDate">Due Date</label>
+          <span id = "sassigneeName"></span>
+          <br>
+          <br>
+          <label>Due Date</label>
           <input class="in" type="date" id="dueDate" name="dueDate" required />
+          <br>
+          <span id = "sdueDate"></span>
+          <br>
           <br>
           <input type="submit" value="Submit" id = "submitButton" />
       </form>

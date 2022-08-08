@@ -3,6 +3,9 @@ let inputForm = document.querySelector("#inputForm");
 let progressTable = document.querySelector("#progressTable");
 let completedTable = document.querySelector("#completedTable");
 let selectAssignee = document.querySelector("#selectAssignee");
+let temp1 = document.querySelector("#staskName") as HTMLInputElement;
+let temp2 = document.querySelector("#sassigneeName") as HTMLInputElement;
+let temp3 = document.querySelector("#sdueDate") as HTMLInputElement;
 let taskName:FormDataEntryValue;
 let dateAdded:FormDataEntryValue;
 let assignee:FormDataEntryValue;
@@ -50,6 +53,21 @@ let tasksArray: task[] = [];
 
 createAssignees();
 
+// --------- Creating Task Objects to be Stored ---------
+
+let createTaskObj = (taskName:string,assignee:string,data3:string) => {
+    let newTask : task = {
+        taskDetails : taskName,
+        aName : assignee.toString(),
+        dueDate : data3,
+        id : hash -1,
+        taskStatus : taskStatus.IN_PROGRESS
+       }
+       tasksArray.push(newTask);
+       console.log(tasksArray[hash - 1]);
+}
+
+
 // --------- Creating a new Table Row --------- 
 
 let createNewTask = () => {
@@ -72,15 +90,7 @@ let createNewTask = () => {
    newRow.appendChild(data3);
    newRow.appendChild(data4);
    progressTable.appendChild(newRow);
-   let newTask : task = {
-    taskDetails : taskName.toString(),
-    aName : assignee.toString(),
-    dueDate : data3.innerText,
-    id : hash -1,
-    taskStatus : taskStatus.IN_PROGRESS
-   }
-   tasksArray.push(newTask);
-   console.log(tasksArray[hash - 1]);
+   createTaskObj(taskName.toString(),assignee.toString(),data3.innerHTML);
 }
 
 // --------- On Completion --------- 
@@ -96,19 +106,50 @@ let taskCompleted = (event : PointerEvent) => {
     console.log(tasksArray[parseInt(taskid)]);
 }
 
+// --------- Clearing Spans ---------
+
+let clearErrors = () => {
+        temp1.innerHTML = "";
+        temp2.innerHTML = "";
+        temp3.innerHTML = "";   
+}
+
+// --------- Clearing INPUTS ---------
+
+let clearInputs = () => {
+    let temp = inputForm as HTMLFormElement;
+    temp.reset();
+}
+
 // --------- Validating Data --------- 
 
 let validateData = (task:string,assignee:string,date:string) => {
-
-    if(task == "" || assignee == "" || date == ""){
-        return false;
+   // alert(assignee);
+    let ok : boolean = true;
+    if(task == ""){
+        temp1.innerHTML = "! PLEASE ENTER A VALID TASK NAME !";
+        ok = false;
     }
-    return true;
+    if(assignee == "default"){
+        temp2.innerHTML = "! PLEASE SELECT A VALID  NAME !";
+        ok = false;
+    }
+    if(date == ""){
+        temp3.innerHTML = "! PLEASE ENTER A VALID DATE !";
+        ok = false;
+    }
+    if(ok){
+        clearInputs();
+        clearErrors();
+        createNewTask();
+    }
+    
 }
 
 // --------- Getting the user input values --------- 
 
 let getFormValues = (event:PointerEvent) => {
+    clearErrors();
    event.preventDefault();
    let data = new FormData(inputForm as HTMLFormElement);
    taskName = data.get("taskName");
@@ -117,11 +158,7 @@ let getFormValues = (event:PointerEvent) => {
    assignee = data.get("assigneeName")
    dateAdded = data.get("dueDate");   
    // VALIDATE DATA
-   let isDataCorrect = validateData(taskName.toString(),assignee.toString(),dateAdded.toString());
-   if(isDataCorrect)createNewTask();
-   else{
-    alert("PLEASE ENTER TASK DETAILS CORRECTLY");
-   }
+   validateData(taskName.toString(),assignee.toString(),dateAdded.toString());
 }
 
 // --------- Event Listener for Submit Button --------- 
