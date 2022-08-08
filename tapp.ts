@@ -1,12 +1,22 @@
 let submitButton = document.querySelector("#submitButton");
-let inputForm = submitButton.parentNode;
+let inputForm = document.querySelector("#inputForm");
 let progressTable = document.querySelector("#progressTable");
 let completedTable = document.querySelector("#completedTable");
-let taskName:string;
-let assigneeName:string;
-let dateAdded:string;
+let selectAssignee = document.querySelector("#selectAssignee");
+let taskName:FormDataEntryValue;
+let dateAdded:FormDataEntryValue;
+let assignee:FormDataEntryValue;
 let hash = 10;
-
+let assigneeName = ["Jayesh","Shibo", "Rahul", "Prabhjot", "Anubhv", "Hari", "Sarthak", "Abdul", "Chetan", "Rishab","Rakesh",]
+let createAssignees = () => {
+    for(let aname of assigneeName){
+        let newOption = document.createElement("option");
+        newOption.value = aname;
+        newOption.innerHTML = aname;
+        selectAssignee.appendChild(newOption);
+    }
+}
+createAssignees();
 let createNewTask = () => {
    let newRow = document.createElement("tr");
    let data1 = document.createElement("td");
@@ -18,9 +28,9 @@ let createNewTask = () => {
    checkbox.addEventListener("click",taskCompleted);
    checkbox.id =  hash.toString();
    hash++;
-   data1.innerHTML = taskName;
-   data2.innerHTML = assigneeName;
-   data3.innerHTML = dateAdded.split("-").reverse().join("-");
+   data1.innerHTML = taskName.toString();
+   data2.innerHTML = assignee.toString();
+   data3.innerHTML = (dateAdded.toString()).split("-").reverse().join("-");
    data4.appendChild(checkbox);
    newRow.appendChild(data1);
    newRow.appendChild(data2);
@@ -43,14 +53,16 @@ let validateData = (task:string,assignee:string,date:string) => {
     }
     return true;
 }
-let getFormValues = (event) => {
+let getFormValues = (event:PointerEvent) => {
    event.preventDefault();
-   let data = new FormData(inputForm);
+   let data = new FormData(inputForm as HTMLFormElement);
    taskName = data.get("taskName");
-   assigneeName = data.get("assigneeName");
+  // let selectAssignee2 = selectAssignee as HTMLInputElement;
+   //assignee = selectAssignee2.value ;
+   assignee = data.get("assigneeName")
    dateAdded = data.get("dueDate");   
    // VALIDATE DATA
-   let isDataCorrect = validateData(taskName,assigneeName,dateAdded);
+   let isDataCorrect = validateData(taskName.toString(),assignee.toString(),dateAdded.toString());
    if(isDataCorrect)createNewTask();
    else{
     alert("PLEASE ENTER TASK DETAILS CORRECTLY");

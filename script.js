@@ -28,7 +28,7 @@ let createNewTask = () => {
    progressTable.appendChild(newRow);
 }
 let taskCompleted = (event) => {
-    console.log(event);
+   // console.log(event);
     let taskid = event.target.id;
     let task = document.getElementById(taskid);
     let parent = task.closest("tr");
@@ -45,6 +45,7 @@ let validateData = (task,assignee,date) => {
 }
 let getFormValues = (event) => {
    event.preventDefault();
+   console.log(event);
    let data = new FormData(inputForm);
    taskName = data.get("taskName");
    assigneeName = data.get("assigneeName");
